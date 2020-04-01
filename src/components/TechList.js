@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import TechItem from './TechItem'
+import PropTypes from 'prop-types'
 
 
 
@@ -9,19 +10,46 @@ class TechList extends Component {
         teste: 'teste'
     }
 
+    static propTypes = {
+        teste: PropTypes.string
+    }
+
 
     state = {
 
         newTech: '',
 
-        techs: [
-            'NodeJS',
-            'React',
-            'React Native',
-            'ES6'
-        ]
+        techs: []
     };
 
+    //ciclo de vida
+    //executado assim que o componente aoarece em dela
+    componentDidMount() {
+        console.log(this.props.teste)
+    }
+
+
+    //executado sempre que houver alteração nas props ou estado
+    componentDidUpdate(prevProps, prevState) {
+        //prevProps, prevState - propriedades antigas
+        //this.props, this.state - novas propriedades
+        if (prevState.techs !== this.state.techs) {
+            localStorage.setItem('techs', JSON.stringify(this.state.techs));
+        }
+    }
+
+
+    //executado quando o componente deixa de existir
+    componentWillMount() {
+        const techs = localStorage.getItem('techs')
+        if (techs) {
+            this.setState({
+                techs: JSON.parse(techs)
+            });
+
+        }
+        console.log(this.props.teste)
+    }
 
     inputChange = event => {
 
@@ -38,7 +66,7 @@ class TechList extends Component {
         }
 
         this.setState({
-            techs: [this.state.newTech, ... this.state.techs],
+            techs: [... this.state.techs, this.state.newTech],
             newTech: ''
         });
 
@@ -47,7 +75,7 @@ class TechList extends Component {
     removeTech = index => {
         let techsA = this.state.techs;
         techsA.splice(index, 1);
-        this.setState({ techs: techsA });
+        this.setState({ techs: [...techsA] });
     }
 
 
