@@ -1,0 +1,7 @@
+yarn add @babel/core @babel/preset-env @babel/preset-react webpack webpack-cli webpack-dev-server babel-loader -D
+yarn add @babel/plugin-proposal-class-properties
+yarn add react react-dom -D
+
+yarn add babel-loader -D
+yarn add style-loader css-loader -D
+yarn add file-loader -D
